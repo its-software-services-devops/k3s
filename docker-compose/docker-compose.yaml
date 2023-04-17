@@ -34,7 +34,7 @@ services:
     - /var/run
     privileged: true
     volumes:
-      - k3s-agent:/etc/rancher/node
+      - k3s-agent:/etc/rancher/node #This is where agent stroe server password
     environment:
     - K3S_URL=https://server:6443
     - K3S_TOKEN=secret
