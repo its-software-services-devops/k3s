@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: argocd
+  namespace: kube-system
+spec:
+  repo: https://argoproj.github.io/argo-helm
+  chart: argo-cd
+  version: 4.9.7
+  targetNamespace: argocd
+  valuesContent: |-
+    fullnameOverride: argocd
+    dex: {}
+    server:  
+      config:
+        url: https://argocd.<<VAR_DOMAIN>>
