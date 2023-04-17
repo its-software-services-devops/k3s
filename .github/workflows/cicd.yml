@@ -2,7 +2,7 @@ name: K3S
 
 on:
   push:
-    branches: [ develop, master ]
+    branches: [ develop, main ]
     tags: ['v*.*.*-*']
 
 env:
@@ -17,20 +17,20 @@ jobs:
       uses: snow-actions/line-notify@v1.0.0
       with:
         access_token: ${{ secrets.LINE_ACCESS_TOKEN }}
-        message: "Start deploying [genuine] [${{ needs.build1.outputs.imageTag }}] to [${{ needs.build1.outputs.autoDeployEnv }}]..."
+        message: "Start deploying [k3s] [${{ needs.build1.outputs.imageTag }}] to [${{ needs.build1.outputs.autoDeployEnv }}]..."
 
     - name: show job status
       if: always()
       uses: snow-actions/line-notify@v1.0.0
       with:
         access_token: ${{ secrets.LINE_ACCESS_TOKEN }}
-        message: "Done deploying [genuine] [${{ needs.build1.outputs.imageTag }}] to [${{ needs.build1.outputs.autoDeployEnv }}]..."
+        message: "Done deploying [k3s] [${{ needs.build1.outputs.imageTag }}] to [${{ needs.build1.outputs.autoDeployEnv }}]..."
 
   build1:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [ ml-training-api ]
+        service: [ k3s ]
     outputs:
       imageTag: ${{ steps.prep.outputs.version }}
       autoDeployEnv: ${{ steps.prep.outputs.deployEnv }}
