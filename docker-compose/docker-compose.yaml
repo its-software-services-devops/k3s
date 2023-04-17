@@ -1,0 +1,30 @@
+version: '3'
+services:
+  server:
+    image: "gcr.io/its-artifact-commons/k3s:v1.26.4-rc1-k3s1-amd64-0"
+    command:
+    - server
+    tmpfs:
+    - /run
+    - /var/run
+    privileged: true
+    environment:
+    - K3S_TOKEN=secret
+    - K3S_KUBECONFIG_OUTPUT=/output/kubeconfig.yaml
+    - K3S_KUBECONFIG_MODE=666
+    volumes:
+    - .:/output
+    ports:
+    - 6443:6443
+
+  agent:
+    image: "gcr.io/its-artifact-commons/k3s:v1.26.4-rc1-k3s1-amd64-0"
+    command:
+    - agent
+    tmpfs:
+    - /run
+    - /var/run
+    privileged: true
+    environment:
+    - K3S_URL=https://server:6443
+    - K3S_TOKEN=secret
