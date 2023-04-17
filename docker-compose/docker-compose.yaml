@@ -1,7 +1,10 @@
 version: '3'
+volumes:
+  k3s-server: {}
 services:
   server:
-    image: "gcr.io/its-artifact-commons/k3s:v1.26.4-rc1-k3s1-amd64-0"
+    hostname: k3s-master-1
+    image: "gcr.io/its-artifact-commons/k3s:develop-bc50c85"
     command:
     - server
     tmpfs:
@@ -14,11 +17,13 @@ services:
     - K3S_KUBECONFIG_MODE=666
     volumes:
     - .:/output
+    - k3s-server:/var/lib/rancher/k3s/server/db
     ports:
     - 6443:6443
 
   agent:
-    image: "gcr.io/its-artifact-commons/k3s:v1.26.4-rc1-k3s1-amd64-0"
+    hostname: k3s-worker-1
+    image: "gcr.io/its-artifact-commons/k3s:develop-bc50c85"
     command:
     - agent
     tmpfs:
