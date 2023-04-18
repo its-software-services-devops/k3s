@@ -68,6 +68,6 @@ metadata:
 type: Opaque    
 stringData:
   url: https://github.com/its-software-services-devops/k3s-argocd-demo-apps.git
-  username: dummy-gh
-  password: 'notused-because-it-is-public'
+  #username: dummy-gh
+  #password: 'notused-because-it-is-public'
   type: git
