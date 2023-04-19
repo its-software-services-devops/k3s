@@ -6,7 +6,7 @@ services:
   server:
     hostname: k3s-master-1
     restart: always
-    image: "gcr.io/its-artifact-commons/k3s:develop-bc50c85"
+    image: "gcr.io/its-artifact-commons/k3s:${K3S_VERSION}"
     command:
     - server
     tmpfs:
@@ -20,13 +20,14 @@ services:
     volumes:
       - .:/output
       - k3s-server:/var/lib/rancher/k3s
+      - ./secrets:/secrets
     ports:
     - 6443:6443
 
   agent:
     hostname: k3s-worker-1
     restart: always
-    image: "gcr.io/its-artifact-commons/k3s:develop-bc50c85"
+    image: "gcr.io/its-artifact-commons/k3s:${K3S_VERSION}"
     command:
     - agent
     tmpfs:
@@ -34,7 +35,7 @@ services:
     - /var/run
     privileged: true
     volumes:
-      - k3s-agent:/etc/rancher/node #This is where agent stroe server password
+      - k3s-agent:/etc/rancher/node
     environment:
     - K3S_URL=https://server:6443
     - K3S_TOKEN=secret
