@@ -5,3 +5,6 @@ COPY scripts/*.sh /scripts/
 
 #ENTRYPOINT ["/scripts/entry.sh"]
 #CMD ["agent"]
+
+ENTRYPOINT ["/bin/k3s"]
+CMD ["agent"]
