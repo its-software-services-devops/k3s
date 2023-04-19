@@ -19,8 +19,8 @@ services:
     - K3S_KUBECONFIG_MODE=666
     volumes:
       - .:/output
+      - ./addons/initial-secrets.yaml:/var/lib/rancher/k3s/server/manifests/initial-secrets.yaml
       - k3s-server:/var/lib/rancher/k3s
-      - ./secrets:/secrets
     ports:
     - 6443:6443
 
