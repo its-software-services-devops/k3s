@@ -16,11 +16,11 @@ END
 
 cat ${SRC_FILE} | while read line
 do
-  KEY=$(echo "${line}" | cut -d= -f1)
-  VALUE=$(echo "${line}" | cut -d= -f2)
+  regex="^(.+?)=(.+)$"
+  if [[ $line =~ $regex ]]; then
+    KEY=${BASH_REMATCH[1]}
+    VALUE=${BASH_REMATCH[2]}
 
-  echo "  ${KEY}: $(echo -n "${VALUE}" | base64)" >> ${TMP_FILE}
+    echo "  ${KEY}: $(echo -n "${VALUE}" | base64 -w0)" >> ${TMP_FILE}
+  fi
 done
-
-echo "Done initializing secrets - [${DST_FILE}]"
-cp ${TMP_FILE} ${DST_FILE}
