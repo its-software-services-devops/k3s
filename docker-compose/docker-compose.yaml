@@ -39,3 +39,36 @@ services:
     environment:
     - K3S_URL=https://server:6443
     - K3S_TOKEN=secret
+
+  node-exporter:
+    image: prom/node-exporter:v1.5.0
+    container_name: node-exporter
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro,rslave
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc' 
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"      
+
+  prometheus:
+    environment:
+      - DUMMY=001
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+      - --enable-feature=expand-external-labels
+    container_name: prometheus
+    image: prom/prometheus:v2.43.0
+    user: root
+    restart: always
+    volumes:
+      - ${BASEDIR}/00-configs/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - ${WIP_DIR}/prometheus:/prometheus
